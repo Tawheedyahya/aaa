@@ -151,7 +151,7 @@
     {{-- =========================================================
          FEATURED PROJECTS
     ========================================================== --}}
-    <section class="projects-preview" aria-labelledby="projects-title">
+    <!-- <section class="projects-preview" aria-labelledby="projects-title">
         <div class="section-inner">
             <div class="section-head reveal">
                 <span class="section-eyebrow">Our Work</span>
@@ -186,7 +186,7 @@
                 <a href="#" class="btn btn--primary">View All Projects</a>
             </div>
         </div>
-    </section>
+    </section> -->
 
     {{-- =========================================================
          WHY CHOOSE US
@@ -245,39 +245,22 @@
                 <h2 id="testimonials-title" class="section-title">What Our Clients Say</h2>
             </div>
 
+            <?php
+                $testimonials = include dirname(__DIR__) . '/views/data/testimonials.blade.php';
+            ?>
             <div class="testimonials__grid">
-                <blockquote class="testimonial-card reveal">
-                    <p>&ldquo;AAA LED delivered our clinic signage ahead of schedule and the quality is excellent. Highly recommended.&rdquo;</p>
-                    <footer>
-                        <img src="../public/assets/img/avatars/avatar-1.jpg" alt="" loading="lazy" width="48" height="48">
-                        <div>
-                            <cite>Dr. R. Kumar</cite>
-                            <span>Apollo Clinic, Coimbatore</span>
-                        </div>
-                    </footer>
-                </blockquote>
-
-                <blockquote class="testimonial-card reveal">
-                    <p>&ldquo;Our storefront board looks stunning at night and has genuinely brought in more customers.&rdquo;</p>
-                    <footer>
-                        <img src="../public/assets/img/avatars/avatar-2.jpg" alt="" loading="lazy" width="48" height="48">
-                        <div>
-                            <cite>S. Priya</cite>
-                            <span>Retail Owner, RS Puram</span>
-                        </div>
-                    </footer>
-                </blockquote>
-
-                <blockquote class="testimonial-card reveal">
-                    <p>&ldquo;Professional team, transparent pricing, and great after-sales support. Will work with them again.&rdquo;</p>
-                    <footer>
-                        <img src="../public/assets/img/avatars/avatar-3.jpg" alt="" loading="lazy" width="48" height="48">
-                        <div>
-                            <cite>M. Suresh</cite>
-                            <span>Facilities Manager, Chennai</span>
-                        </div>
-                    </footer>
-                </blockquote>
+                <?php foreach ($testimonials as $t): ?>
+                    <blockquote class="testimonial-card reveal">
+                        <p>&ldquo;<?= htmlspecialchars($t['quote']) ?>&rdquo;</p>
+                        <footer>
+                            <img src="../public/assets/img/avatars/<?= htmlspecialchars($t['avatar']) ?>" alt="" loading="lazy" width="48" height="48">
+                            <div>
+                                <cite><?= htmlspecialchars($t['name']) ?></cite>
+                                <span><?= htmlspecialchars($t['role']) ?></span>
+                            </div>
+                        </footer>
+                    </blockquote>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
