@@ -531,7 +531,14 @@ body {
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, rgba(255, 46, 136, .18), rgba(139, 47, 255, .18));
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
+}
+
+.service-card__icon img {
+    display: block;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
 }
 
 .service-card__title {

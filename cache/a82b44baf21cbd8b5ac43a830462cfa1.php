@@ -87,6 +87,7 @@
     }
     .footer-contact-item {
         display: flex;
+        align-items: center;
         gap: 12px;
         margin-bottom: 16px;
         font-size: 0.9rem;
@@ -98,7 +99,6 @@
         width: 18px;
         height: 18px;
         fill: #e63946;
-        margin-top: 3px;
     }
     .footer-contact-item strong {
         color: #ddd;
