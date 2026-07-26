@@ -1,0 +1,328 @@
+/* ==========================================================================
+   GLOBAL FONTS.CSS — Responsive Typography System
+   Uses fluid clamp() sizing so text scales smoothly across all devices
+   without needing separate media queries for every breakpoint.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   2. ROOT VARIABLES — base scale, adjust these to retune everything
+   -------------------------------------------------------------------------- */
+:root {
+  --font-body: 'BodyFont', 'Segoe UI', Arial, sans-serif;
+  --font-display: 'DisplayFont', 'Impact', sans-serif;
+  --font-mono: 'MonoFont', 'Courier New', monospace;
+
+  --fw-thin: 100;
+  --fw-extralight: 200;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  --lh-tight: 1.1;
+  --lh-normal: 1.4;
+  --lh-relaxed: 1.7;
+
+  --ls-tight: -0.02em;
+  --ls-normal: 0;
+  --ls-wide: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   3. BASE ELEMENT — root sizing reference (16px base, fluid)
+   -------------------------------------------------------------------------- */
+html {
+  font-size: clamp(14px, 1vw + 10px, 18px); /* scales base rem unit */
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: var(--fw-regular);
+  font-style: normal;
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-normal);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   4. HEADINGS — fluid clamp scaling (min, preferred, max)
+   -------------------------------------------------------------------------- */
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw + 1rem, 6rem);
+  font-weight: var(--fw-black);
+  font-style: normal;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw + 1rem, 4.5rem);
+  font-weight: var(--fw-extrabold);
+  font-style: normal;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw + 0.8rem, 3.5rem);
+  font-weight: var(--fw-bold);
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: var(--ls-normal);
+}
+
+h4 {
+  font-family: var(--font-body);
+  font-size: clamp(1.3rem, 2.5vw + 0.6rem, 2.5rem);
+  font-weight: var(--fw-semibold);
+  font-style: normal;
+  line-height: 1.25;
+}
+
+h5 {
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 1.8vw + 0.5rem, 1.8rem);
+  font-weight: var(--fw-medium);
+  font-style: normal;
+  line-height: 1.3;
+}
+
+h6 {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.3vw + 0.4rem, 1.4rem);
+  font-weight: var(--fw-medium);
+  font-style: normal;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+}
+
+/* --------------------------------------------------------------------------
+   5. BODY TEXT ELEMENTS
+   -------------------------------------------------------------------------- */
+p {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.6vw + 0.8rem, 1.25rem);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+  line-height: var(--lh-relaxed);
+}
+
+span {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+strong, b {
+  font-weight: var(--fw-bold);
+  font-style: normal;
+}
+
+em, i {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+small {
+  font-size: clamp(0.75rem, 0.4vw + 0.65rem, 0.95rem);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+}
+
+mark {
+  font-size: inherit;
+  font-weight: var(--fw-medium);
+  font-style: normal;
+}
+
+sub, sup {
+  font-size: 0.7em;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   6. LINKS
+   -------------------------------------------------------------------------- */
+a {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: var(--fw-medium);
+  font-style: normal;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   7. LISTS
+   -------------------------------------------------------------------------- */
+ul, ol, li {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.6vw + 0.8rem, 1.25rem);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+  line-height: var(--lh-relaxed);
+}
+
+/* --------------------------------------------------------------------------
+   8. BLOCKQUOTE / CITE
+   -------------------------------------------------------------------------- */
+blockquote {
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 1.5vw + 0.7rem, 1.6rem);
+  font-weight: var(--fw-regular);
+  font-style: italic;
+  line-height: var(--lh-relaxed);
+}
+
+cite {
+  font-size: clamp(0.85rem, 0.5vw + 0.7rem, 1.1rem);
+  font-weight: var(--fw-medium);
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   9. CODE / MONOSPACE
+   -------------------------------------------------------------------------- */
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: clamp(0.85rem, 0.5vw + 0.7rem, 1.1rem);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+  line-height: var(--lh-normal);
+}
+
+/* --------------------------------------------------------------------------
+   10. FORM ELEMENTS
+   -------------------------------------------------------------------------- */
+label {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 0.5vw + 0.75rem, 1.1rem);
+  font-weight: var(--fw-medium);
+  font-style: normal;
+}
+
+input, textarea, select, button {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 0.5vw + 0.75rem, 1.1rem);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+}
+
+button {
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+}
+
+/* --------------------------------------------------------------------------
+   11. TABLE
+   -------------------------------------------------------------------------- */
+table, th, td {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 0.5vw + 0.75rem, 1.05rem);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+}
+
+th {
+  font-weight: var(--fw-semibold);
+}
+
+/* --------------------------------------------------------------------------
+   12. LED BOARD SPECIFIC UTILITY CLASSES
+   Use these on your dynamic text layers for common display presets.
+   Font-family only inherits — size/weight/style still overridable inline
+   per-element from your editor's state/JSON.
+   -------------------------------------------------------------------------- */
+.led-display {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw + 1rem, 10rem);
+  font-weight: var(--fw-black);
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+}
+
+.led-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw + 1rem, 6rem);
+  font-weight: var(--fw-extrabold);
+  font-style: normal;
+  line-height: 1.05;
+}
+
+.led-subtext {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw + 0.5rem, 2.5rem);
+  font-weight: var(--fw-medium);
+  font-style: normal;
+  line-height: 1.2;
+}
+
+.led-ticker {
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 1.5vw + 0.5rem, 2rem);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+  letter-spacing: var(--ls-wide);
+  white-space: nowrap;
+}
+
+.led-italic {
+  font-style: italic;
+}
+
+.led-bold {
+  font-weight: var(--fw-bold);
+}
+
+.led-black {
+  font-weight: var(--fw-black);
+}
+
+.led-light {
+  font-weight: var(--fw-light);
+}
+
+/* --------------------------------------------------------------------------
+   13. DEVICE-SPECIFIC FALLBACK ADJUSTMENTS
+   clamp() handles most fluid scaling above; these fine-tune edge cases
+   (very small phones, very large TVs/LED walls) where clamp min/max
+   alone isn't enough.
+   -------------------------------------------------------------------------- */
+
+/* Very small phones */
+@media (max-width: 360px) {
+  html { font-size: 13px; }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+  html { font-size: 16px; }
+}
+
+/* Large desktop monitors */
+@media (min-width: 1440px) {
+  html { font-size: 18px; }
+}
+
+/* Large-format LED walls / TVs viewed from a distance — bump everything up */
+@media (min-width: 1920px) {
+  html { font-size: 22px; }
+  .led-display { font-size: clamp(4rem, 10vw + 1rem, 14rem); }
+}
+
+/* Print (in case of preview exports) */
+@media print {
+  html { font-size: 12pt; }
+  body { color: #000000; }
+}
