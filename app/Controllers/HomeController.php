@@ -21,6 +21,8 @@ class HomeController
         ]);
     }
     public function about(){
-        echo 'about';
+        echo $this->blade->render('about', [
+            'name' => 'Yahya'
+        ]);
     }
 }

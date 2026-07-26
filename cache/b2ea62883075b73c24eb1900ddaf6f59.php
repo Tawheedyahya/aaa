@@ -30,8 +30,11 @@
     <link rel="icon" href="<?php echo e(asset('assets/static_images/logo.jpeg')); ?>" type="image/jpeg">
 
     <?php if (! empty(trim($__env->yieldContent('structured_data')))): ?>
-        <?php echo $__env->yieldContent('structured_data'); ?>
-    <?php else: ?>
+    <?php echo $__env->yieldContent('structured_data'); ?>
+<?php else: ?>
+    <script type="application/ld+json">
+    { ...default LocalBusiness... }
+    </script>
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -67,7 +70,7 @@
     ]
 }
 </script>
-    <?php endif; ?>
+<?php endif; ?>
 
     <?php echo $__env->yieldPushContent('head'); ?>
 </head>

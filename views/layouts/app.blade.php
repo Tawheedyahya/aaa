@@ -30,8 +30,11 @@
     <link rel="icon" href="{{ asset('assets/static_images/logo.jpeg') }}" type="image/jpeg">
 
     @hasSection('structured_data')
-        @yield('structured_data')
-    @else
+    @yield('structured_data')
+@else
+    <script type="application/ld+json">
+    { ...default LocalBusiness... }
+    </script>
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -67,7 +70,7 @@
     ]
 }
 </script>
-    @endif
+@endif
 
     @stack('head')
 </head>

@@ -5,7 +5,7 @@
 @section('meta_keywords', 'LED board maker Coimbatore, LED display board maker, hospital LED board, Apollo LED board, medical sign board, shop board maker, outdoor LED signage, LED board service India')
 
 @push('styles')
-    <link rel="stylesheet" href="../public/assets/css/home.css">
+    <!-- <link rel="stylesheet" href="../public/assets/css/home.css"> -->
 @endpush
 
 @section('content')
