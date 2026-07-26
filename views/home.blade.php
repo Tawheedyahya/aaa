@@ -253,7 +253,7 @@
                     <blockquote class="testimonial-card reveal">
                         <p>&ldquo;<?= htmlspecialchars($t['quote']) ?>&rdquo;</p>
                         <footer>
-                            <img src="../public/assets/img/avatars/<?= htmlspecialchars($t['avatar']) ?>" alt="" loading="lazy" width="48" height="48">
+                            <img src="../public/assets/avatars/<?= htmlspecialchars($t['avatar']) ?>" alt="" loading="lazy" width="48" height="48">
                             <div>
                                 <cite><?= htmlspecialchars($t['name']) ?></cite>
                                 <span><?= htmlspecialchars($t['role']) ?></span>
