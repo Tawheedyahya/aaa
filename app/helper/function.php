@@ -2,7 +2,13 @@
 // helpers.php
 
 if (!defined('SITE_URL')) {
-    define('SITE_URL', 'http://localhost:8000'); // no trailing slash
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+    if (strpos($host, 'localhost') !== false) {
+        define('SITE_URL', 'http://localhost:8000'); // no trailing slash
+    } else {
+        define('SITE_URL', 'https://aaaled.in'); // no trailing slash
+    }
 }
 
 // Set this to '' if your document root already points to /public
