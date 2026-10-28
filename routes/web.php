@@ -23,3 +23,6 @@ $r->addRoute('POST', '/vending/create', ['App\Controllers\VendingController', 's
 $r->addRoute('GET', '/vending/{id:\d+}/edit', ['App\Controllers\VendingController', 'edit']);
 $r->addRoute('POST', '/vending/{id:\d+}/edit', ['App\Controllers\VendingController', 'update']);
 $r->addRoute('POST', '/vending/{id:\d+}/delete', ['App\Controllers\VendingController', 'destroy']);
+
+$r->addRoute('GET', '/webhook', ['App\Controllers\VendingController', 'webhookGet']);
+$r->addRoute('POST', '/webhook', ['App\Controllers\VendingController', 'webhookPost']);
