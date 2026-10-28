@@ -16,3 +16,10 @@ $r->addRoute('GET', '/admin/projects/edit/{id:\d+}', ['App\Controllers\AdminCont
 $r->addRoute('POST', '/admin/projects/edit/{id:\d+}', ['App\Controllers\AdminController', 'update']);
 $r->addRoute('POST', '/admin/projects/delete/{id:\d+}', ['App\Controllers\AdminController', 'destroy']);
 $r->addRoute('POST', '/admin/projects/delete-image/{id:\d+}', ['App\Controllers\AdminController', 'deleteImage']);
+
+$r->addRoute('GET', '/vending', ['App\Controllers\VendingController', 'index']);
+$r->addRoute('GET', '/vending/create', ['App\Controllers\VendingController', 'create']);
+$r->addRoute('POST', '/vending/create', ['App\Controllers\VendingController', 'store']);
+$r->addRoute('GET', '/vending/{id:\d+}/edit', ['App\Controllers\VendingController', 'edit']);
+$r->addRoute('POST', '/vending/{id:\d+}/edit', ['App\Controllers\VendingController', 'update']);
+$r->addRoute('POST', '/vending/{id:\d+}/delete', ['App\Controllers\VendingController', 'destroy']);
