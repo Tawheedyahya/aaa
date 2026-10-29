@@ -111,6 +111,19 @@ class VendingController
 
     public function webhookGet(): void
     {
+            $this->jsonResponse([
+        'machineOnline' => false,
+        'items' => [
+            ['flavor' => 'chocolate',   'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
+            ['flavor' => 'vanilla',     'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
+            ['flavor' => 'strawberry',  'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
+            ['flavor' => 'coffee',      'available' => true, 'options' => [['grams' => 20, 'amount' => 3200], ['grams' => 30, 'amount' => 4800], ['grams' => 40, 'amount' => 6400]]],
+            ['flavor' => 'banana',      'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
+            ['flavor' => 'cookies',     'available' => true, 'options' => [['grams' => 20, 'amount' => 3200], ['grams' => 30, 'amount' => 4800], ['grams' => 40, 'amount' => 6400]]],
+            ['flavor' => 'unflavoured', 'available' => true, 'options' => [['grams' => 20, 'amount' => 2400], ['grams' => 30, 'amount' => 3600], ['grams' => 40, 'amount' => 4800]]],
+        ],
+    ]);
+    return; // everything below is kept but not executed
         $lock = fopen(sys_get_temp_dir() . '/aaa-vending-webhook.lock', 'c');
         if ($lock === false) {
             $this->jsonResponse(['error' => 'Unable to open the order polling lock.'], 500);
