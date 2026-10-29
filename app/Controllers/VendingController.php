@@ -112,7 +112,7 @@ class VendingController
     public function webhookGet(): void
     {
             $this->jsonResponse([
-        'machineOnline' => false,
+        'machineOnline' => true,
         'items' => [
             ['flavor' => 'chocolate',   'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
             ['flavor' => 'vanilla',     'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
@@ -228,7 +228,7 @@ class VendingController
 
     private function jsonResponse(array $data, int $status = 200): void
     {
-        http_response_code($status);
+        http_response_code(204);
         header('Content-Type: application/json; charset=utf-8');
         header('Cache-Control: no-store');
         echo json_encode($data, JSON_THROW_ON_ERROR);
