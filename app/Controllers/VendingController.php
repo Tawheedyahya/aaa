@@ -342,8 +342,7 @@ class VendingController
             $this->jsonResponse([
                 'orderId' => $order['order_id'],
                 'slot'    => 1,    // TEMP: your orders table has no slot/flavor column yet
-                'grams'   => (int) $order['gram'],
-                'waterMl' => 200,  // TEMP: no water column yet
+                'grams'   => (int) $order['gram']
             ]);
         } finally {
             flock($lock, LOCK_UN);
@@ -380,36 +379,22 @@ class VendingController
             return;
         }
 
-        $status = is_array($payload) ? strtoupper((string) ($payload['status'] ?? '')) : '';
-        if (!in_array($status, ['STARTED', 'READY', 'FAILED'], true)) {
-            $this->jsonResponse(['error' => 'status must be STARTED, READY or FAILED.'], 400);
-            return;
-        }
-
         try {
-            // Make sure the order exists
-            $check = $this->pdo->prepare('SELECT 1 FROM orders WHERE order_id = :order_id');
-            $check->execute(['order_id' => $orderId]);
-            if ($check->fetchColumn() === false) {
-                $this->jsonResponse(['error' => 'Order not found.'], 404);
-                return;
-            }
+            $statement = $this->pdo->prepare(
+                "UPDATE orders
+             SET status = 'dispense', done = 1
+             WHERE order_id = :order_id"
+            );
+            $statement->execute(['order_id' => $orderId]);
 
-            if ($status === 'READY') {
-                // Drink finished: mark dispensed and done
-                $statement = $this->pdo->prepare(
-                    "UPDATE orders SET status = 'dispense', done = 1 WHERE order_id = :order_id"
-                );
-                $statement->execute(['order_id' => $orderId]);
-            } elseif ($status === 'FAILED') {
-                // Stop re-sending this order forever; status stays 'not_dispense' so you can spot failures
-                $statement = $this->pdo->prepare(
-                    "UPDATE orders SET done = 1 WHERE order_id = :order_id"
-                );
-                $statement->execute(['order_id' => $orderId]);
-                error_log('Vending order failed on machine: ' . $orderId . ' ' . ($payload['error'] ?? ''));
+            if ($statement->rowCount() === 0) {
+                $check = $this->pdo->prepare('SELECT 1 FROM orders WHERE order_id = :order_id');
+                $check->execute(['order_id' => $orderId]);
+                if ($check->fetchColumn() === false) {
+                    $this->jsonResponse(['error' => 'Order not found.'], 404);
+                    return;
+                }
             }
-            // STARTED: nothing to update, just acknowledge with 200
         } catch (\PDOException $exception) {
             error_log('Vending webhook POST failed: ' . $exception->getMessage());
             $this->jsonResponse(['error' => 'Unable to update the order.'], 500);
@@ -419,7 +404,8 @@ class VendingController
         $this->jsonResponse([
             'success'  => true,
             'order_id' => $orderId,
-            'status'   => $status,
+            'status'   => 'dispense',
+            'done'     => 1,
         ]);
     }
 }
