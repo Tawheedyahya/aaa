@@ -109,122 +109,109 @@ class VendingController
         $this->redirect('/vending?deleted=1');
     }
 
-    public function webhookGet(): void
-    {
-            $this->jsonResponse([
-        'machineOnline' => true,
-        'items' => [
-            ['flavor' => 'chocolate',   'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
-            ['flavor' => 'vanilla',     'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
-            ['flavor' => 'strawberry',  'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
-            ['flavor' => 'coffee',      'available' => true, 'options' => [['grams' => 20, 'amount' => 3200], ['grams' => 30, 'amount' => 4800], ['grams' => 40, 'amount' => 6400]]],
-            ['flavor' => 'banana',      'available' => true, 'options' => [['grams' => 20, 'amount' => 3000], ['grams' => 30, 'amount' => 4500], ['grams' => 40, 'amount' => 6000]]],
-            ['flavor' => 'cookies',     'available' => true, 'options' => [['grams' => 20, 'amount' => 3200], ['grams' => 30, 'amount' => 4800], ['grams' => 40, 'amount' => 6400]]],
-            ['flavor' => 'unflavoured', 'available' => true, 'options' => [['grams' => 20, 'amount' => 2400], ['grams' => 30, 'amount' => 3600], ['grams' => 40, 'amount' => 4800]]],
-        ],
-    ]);
-    return; // everything below is kept but not executed
-        $lock = fopen(sys_get_temp_dir() . '/aaa-vending-webhook.lock', 'c');
-        if ($lock === false) {
-            $this->jsonResponse(['error' => 'Unable to open the order polling lock.'], 500);
-            return;
-        }
+    // public function webhookGet(): void
+    // {
+    //     $lock = fopen(sys_get_temp_dir() . '/aaa-vending-webhook.lock', 'c');
+    //     if ($lock === false) {
+    //         $this->jsonResponse(['error' => 'Unable to open the order polling lock.'], 500);
+    //         return;
+    //     }
 
-        try {
-            if (!flock($lock, LOCK_EX)) {
-                $this->jsonResponse(['error' => 'Unable to lock order polling.'], 503);
-                return;
-            }
+    //     try {
+    //         if (!flock($lock, LOCK_EX)) {
+    //             $this->jsonResponse(['error' => 'Unable to lock order polling.'], 503);
+    //             return;
+    //         }
 
-            try {
-                $statement = $this->pdo->query(
-                    "SELECT order_id, gram, status, done
-                     FROM orders
-                     WHERE status = 'not_dispense' AND done = 0
-                     ORDER BY created_at ASC, id ASC
-                     LIMIT 1"
-                );
-                $order = $statement->fetch();
-            } catch (\PDOException $exception) {
-                error_log('Vending webhook GET failed: ' . $exception->getMessage());
-                $this->jsonResponse(['error' => 'Unable to retrieve an order.'], 500);
-                return;
-            }
+    //         try {
+    //             $statement = $this->pdo->query(
+    //                 "SELECT order_id, gram, status, done
+    //                  FROM orders
+    //                  WHERE status = 'not_dispense' AND done = 0
+    //                  ORDER BY created_at ASC, id ASC
+    //                  LIMIT 1"
+    //             );
+    //             $order = $statement->fetch();
+    //         } catch (\PDOException $exception) {
+    //             error_log('Vending webhook GET failed: ' . $exception->getMessage());
+    //             $this->jsonResponse(['error' => 'Unable to retrieve an order.'], 500);
+    //             return;
+    //         }
 
-            $this->jsonResponse([
-                'command' => $order === false
-                    ? null
-                    : [
-                        'order_id' => $order['order_id'],
-                        'gram' => (int) $order['gram'],
-                        'status' => $order['status'],
-                        'done' => (int) $order['done'],
-                    ],
-            ]);
-        } finally {
-            flock($lock, LOCK_UN);
-            fclose($lock);
-        }
-    }
+    //         $this->jsonResponse([
+    //             'command' => $order === false
+    //                 ? null
+    //                 : [
+    //                     'order_id' => $order['order_id'],
+    //                     'gram' => (int) $order['gram'],
+    //                     'status' => $order['status'],
+    //                     'done' => (int) $order['done'],
+    //                 ],
+    //         ]);
+    //     } finally {
+    //         flock($lock, LOCK_UN);
+    //         fclose($lock);
+    //     }
+    // }
 
-    public function webhookPost(): void
-    {
-        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-        if (stripos($contentType, 'application/json') !== false) {
-            $body = file_get_contents('php://input');
-            if ($body === false) {
-                $this->jsonResponse(['error' => 'Unable to read the request body.'], 400);
-                return;
-            }
+    // public function webhookPost(): void
+    // {
+    //     $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+    //     if (stripos($contentType, 'application/json') !== false) {
+    //         $body = file_get_contents('php://input');
+    //         if ($body === false) {
+    //             $this->jsonResponse(['error' => 'Unable to read the request body.'], 400);
+    //             return;
+    //         }
 
-            try {
-                $payload = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-            } catch (\JsonException $exception) {
-                $this->jsonResponse(['error' => 'Request body must contain valid JSON.'], 400);
-                return;
-            }
-        } else {
-            $payload = $_POST;
-        }
+    //         try {
+    //             $payload = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+    //         } catch (\JsonException $exception) {
+    //             $this->jsonResponse(['error' => 'Request body must contain valid JSON.'], 400);
+    //             return;
+    //         }
+    //     } else {
+    //         $payload = $_POST;
+    //     }
 
-        $orderId = is_array($payload) ? ($payload['order_id'] ?? null) : null;
-        if (
-            !is_string($orderId)
-            || !preg_match('/^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/', $orderId)
-        ) {
-            $this->jsonResponse(['error' => 'A valid order_id is required.'], 400);
-            return;
-        }
+    //     $orderId = is_array($payload) ? ($payload['order_id'] ?? null) : null;
+    //     if (
+    //         !is_string($orderId)
+    //         || !preg_match('/^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/', $orderId)
+    //     ) {
+    //         $this->jsonResponse(['error' => 'A valid order_id is required.'], 400);
+    //         return;
+    //     }
 
-        try {
-            $statement = $this->pdo->prepare(
-                "UPDATE orders
-                 SET status = 'dispense', done = 1
-                 WHERE order_id = :order_id"
-            );
-            $statement->execute(['order_id' => $orderId]);
+    //     try {
+    //         $statement = $this->pdo->prepare(
+    //             "UPDATE orders
+    //              SET status = 'dispense', done = 1
+    //              WHERE order_id = :order_id"
+    //         );
+    //         $statement->execute(['order_id' => $orderId]);
 
-            if ($statement->rowCount() === 0) {
-                $check = $this->pdo->prepare('SELECT 1 FROM orders WHERE order_id = :order_id');
-                $check->execute(['order_id' => $orderId]);
-                if ($check->fetchColumn() === false) {
-                    $this->jsonResponse(['error' => 'Order not found.'], 404);
-                    return;
-                }
-            }
-        } catch (\PDOException $exception) {
-            error_log('Vending webhook POST failed: ' . $exception->getMessage());
-            $this->jsonResponse(['error' => 'Unable to update the order.'], 500);
-            return;
-        }
+    //         if ($statement->rowCount() === 0) {
+    //             $check = $this->pdo->prepare('SELECT 1 FROM orders WHERE order_id = :order_id');
+    //             $check->execute(['order_id' => $orderId]);
+    //             if ($check->fetchColumn() === false) {
+    //                 $this->jsonResponse(['error' => 'Order not found.'], 404);
+    //                 return;
+    //             }
+    //         }
+    //     } catch (\PDOException $exception) {
+    //         error_log('Vending webhook POST failed: ' . $exception->getMessage());
+    //         $this->jsonResponse(['error' => 'Unable to update the order.'], 500);
+    //         return;
+    //     }
 
-        $this->jsonResponse([
-            'success' => true,
-            'order_id' => $orderId,
-            'status' => 'dispense',
-            'done' => 1,
-        ]);
-    }
+    //     $this->jsonResponse([
+    //         'success' => true,
+    //         'order_id' => $orderId,
+    //         'status' => 'dispense',
+    //         'done' => 1,
+    //     ]);
+    // }
 
     private function jsonResponse(array $data, int $status = 200): void
     {
@@ -315,5 +302,124 @@ class VendingController
     {
         header('Location: ' . $location, true, 303);
         exit;
+    }
+    public function webhookGet(): void
+    {
+        $lock = fopen(sys_get_temp_dir() . '/aaa-vending-webhook.lock', 'c');
+        if ($lock === false) {
+            $this->jsonResponse(['error' => 'Unable to open the order polling lock.'], 500);
+            return;
+        }
+
+        try {
+            if (!flock($lock, LOCK_EX)) {
+                $this->jsonResponse(['error' => 'Unable to lock order polling.'], 503);
+                return;
+            }
+
+            try {
+                $statement = $this->pdo->query(
+                    "SELECT order_id, gram, status, done
+                 FROM orders
+                 WHERE status = 'not_dispense' AND done = 0
+                 ORDER BY created_at ASC, id ASC
+                 LIMIT 1"
+                );
+                $order = $statement->fetch();
+            } catch (\PDOException $exception) {
+                error_log('Vending webhook GET failed: ' . $exception->getMessage());
+                $this->jsonResponse(['error' => 'Unable to retrieve an order.'], 500);
+                return;
+            }
+
+            // No pending order: 204 with no body (the machine just polls again)
+            if ($order === false) {
+                http_response_code(204);
+                header('Cache-Control: no-store');
+                return;
+            }
+
+            $this->jsonResponse([
+                'orderId' => $order['order_id'],
+                'slot'    => 1,    // TEMP: your orders table has no slot/flavor column yet
+                'grams'   => (int) $order['gram'],
+                'waterMl' => 200,  // TEMP: no water column yet
+            ]);
+        } finally {
+            flock($lock, LOCK_UN);
+            fclose($lock);
+        }
+    }
+
+    public function webhookPost(): void
+    {
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        if (stripos($contentType, 'application/json') !== false) {
+            $body = file_get_contents('php://input');
+            if ($body === false) {
+                $this->jsonResponse(['error' => 'Unable to read the request body.'], 400);
+                return;
+            }
+
+            try {
+                $payload = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+            } catch (\JsonException $exception) {
+                $this->jsonResponse(['error' => 'Request body must contain valid JSON.'], 400);
+                return;
+            }
+        } else {
+            $payload = $_POST;
+        }
+
+        $orderId = is_array($payload) ? ($payload['order_id'] ?? null) : null;
+        if (
+            !is_string($orderId)
+            || !preg_match('/^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$/', $orderId)
+        ) {
+            $this->jsonResponse(['error' => 'A valid order_id is required.'], 400);
+            return;
+        }
+
+        $status = is_array($payload) ? strtoupper((string) ($payload['status'] ?? '')) : '';
+        if (!in_array($status, ['STARTED', 'READY', 'FAILED'], true)) {
+            $this->jsonResponse(['error' => 'status must be STARTED, READY or FAILED.'], 400);
+            return;
+        }
+
+        try {
+            // Make sure the order exists
+            $check = $this->pdo->prepare('SELECT 1 FROM orders WHERE order_id = :order_id');
+            $check->execute(['order_id' => $orderId]);
+            if ($check->fetchColumn() === false) {
+                $this->jsonResponse(['error' => 'Order not found.'], 404);
+                return;
+            }
+
+            if ($status === 'READY') {
+                // Drink finished: mark dispensed and done
+                $statement = $this->pdo->prepare(
+                    "UPDATE orders SET status = 'dispense', done = 1 WHERE order_id = :order_id"
+                );
+                $statement->execute(['order_id' => $orderId]);
+            } elseif ($status === 'FAILED') {
+                // Stop re-sending this order forever; status stays 'not_dispense' so you can spot failures
+                $statement = $this->pdo->prepare(
+                    "UPDATE orders SET done = 1 WHERE order_id = :order_id"
+                );
+                $statement->execute(['order_id' => $orderId]);
+                error_log('Vending order failed on machine: ' . $orderId . ' ' . ($payload['error'] ?? ''));
+            }
+            // STARTED: nothing to update, just acknowledge with 200
+        } catch (\PDOException $exception) {
+            error_log('Vending webhook POST failed: ' . $exception->getMessage());
+            $this->jsonResponse(['error' => 'Unable to update the order.'], 500);
+            return;
+        }
+
+        $this->jsonResponse([
+            'success'  => true,
+            'order_id' => $orderId,
+            'status'   => $status,
+        ]);
     }
 }
